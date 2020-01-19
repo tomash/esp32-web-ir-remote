@@ -1,0 +1,98 @@
+<!--
+
+ * Toshiba TV remote:
+ * NEC 32 bits
+ * irsend.sendNEC(0x2FD58A7, 32);
+
+ * vol+ : 2FD58A7
+ * vol- : 2FD7887
+ * mute : 2FD08F7
+ * prog+: 2FDD827
+ * prog-: 2FDF807
+ * input: 2FD28D7
+ * up     2FD9867
+ * down   2FDB847
+ * left   2FD42BD
+ * right  2FD02FD
+ * ok     2FD847B
+ * red    2FD12ED
+ * green  2FD926D
+ * yellow 2FD52AD
+ * blue   2FDD22D
+ * power  2FD48B7
+ * back   2FD26D9
+ * exit   2FDC23D
+
+ -->
+<head>
+  <title>Wifi multiremote</title>
+  <style>
+    .toshibatv a, .sonysoundbar a {
+      display: block;
+      width: 100px;
+      height: 40px;
+      border: 1px solid;
+      text-align: center;
+    }
+
+  </style>
+
+<body>
+
+<div class="toshibatv irlinks">
+  <h2>TV</h2>
+  <a href="/ir?code=50153655&bits=32&protocol=NEC"> power</a>
+  <a href="/ir?code=50157735&bits=32&protocol=NEC"> vol+</a>
+  <a href="/ir?code=50165895&bits=32&protocol=NEC"> vol-</a>
+  <a href="/ir?code=50137335&bits=32&protocol=NEC"> mute</a>
+  <a href="/ir?code=50190375&bits=32&protocol=NEC"> prog+</a>
+  <a href="/ir?code=50198535&bits=32&protocol=NEC"> prog-</a>
+  <a href="/ir?code=50145495&bits=32&protocol=NEC"> input</a>
+  <a href="/ir?code=50174055&bits=32&protocol=NEC"> up</a>
+  <a href="/ir?code=50182215&bits=32&protocol=NEC"> down</a> 
+  <a href="/ir?code=50152125&bits=32&protocol=NEC"> left</a>
+  <a href="/ir?code=50135805&bits=32&protocol=NEC"> right</a>
+  <a href="/ir?code=50168955&bits=32&protocol=NEC"> ok</a>
+<!--  <a href="/ir?code=50139885&bits=32&protocol=NEC"> red</a> 
+  <a href="/ir?code=50172525&bits=32&protocol=NEC"> green</a>
+  <a href="/ir?code=50156205&bits=32&protocol=NEC"> yellow</a>
+  <a href="/ir?code=50188845&bits=32&protocol=NEC"> blue</a>-->
+  <a href="/ir?code=50144985&bits=32&protocol=NEC"> back</a>
+  <a href="/ir?code=50184765&bits=32&protocol=NEC"> exit</a>
+</div>
+
+<div class="sonysoundbar irlinks">
+  <h2>Soundbar</h2>
+  <a href="/ir?code=21516&bits=15&protocol=Sony"> power</a>
+  <a href="/ir?code=9228&bits=15&protocol=Sony"> vol+</a>
+  <a href="/ir?code=25612&bits=15&protocol=Sony"> vol-</a>
+  <a href="/ir?code=19213&bits=15&protocol=Sony"> input</a>
+  <a href="/ir?code=5132&bits=15&protocol=Sony"> mute</a>
+  <a href="/ir?code=7436&bits=15&protocol=Sony"> sw+</a>
+  <a href="/ir?code=23820&bits=15&protocol=Sony"> sw-</a>
+</div>
+
+<script src="jquery-3.1.1.min.js"></script>
+<script>
+  var irremoteip = "192.168.1.60";
+
+  jQuery(".irlinks a").click(function(e) {
+  	var $this = jQuery(this);
+  	var actionurl = "http://" + irremoteip + $this.attr('href');
+  	console.log("ajaxing url ", actionurl);
+  	$.ajax({
+  	  url: actionurl,
+  	}).done(function(res) {
+  	  console.log(res);
+  	}).fail(function(err) {
+  	  console.log('Error: ' + err.status);
+  	});
+    return false;
+  });
+</script>
+
+</body>
+
+
+
+
