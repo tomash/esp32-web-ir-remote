@@ -1,3 +1,24 @@
+/*  ESP32 Web Infrared Remote
+ *  custom app built for fun and controlling my TV&Soundbar pair
+ *  with just the phone, or laptop, or anything web-capable
+ */
+
+/*  Before building, read this issue
+ *  https://github.com/crankyoldgit/IRremoteESP8266/issues/1018
+ *  and ensure that IRremoteESP8266 library has this code in ir_Sony.cpp for sendSony
+ *  method, changing carrier frequency to 38 KHz because this is what HT-CT380 soundbar
+ *  operates on. The changed method should have this code:
+
+    void IRsend::sendSony(uint64_t data, uint16_t nbits, uint16_t repeat) {
+      sendGeneric(kSonyHdrMark, kSonySpace, kSonyOneMark, kSonySpace, kSonyZeroMark,
+                  kSonySpace,
+                  0,  // No Footer mark.
+                  kSonyMinGap, kSonyRptLength, data, nbits, 38, true, repeat, 33);
+    }
+
+ */
+
+
 #include <IRremoteESP8266.h>
 #include <IRrecv.h>
 #include <IRsend.h>
@@ -58,9 +79,10 @@ void handleIr(){
     else if (protocol == "Sony"){
       server.send(200, "text/html", webOutput);
 
+/*
       // sending raw because: 
       // https://github.com/crankyoldgit/IRremoteESP8266/issues/1018
-
+      
       if(code==9228) //0x240c
         irsend.sendRaw(x240crawData, 127, 38);
       else if(code==21516) //0x540c
@@ -75,10 +97,9 @@ void handleIr(){
         irsend.sendRaw(x1d0crawData, 95, 38);
       else if(code==23820) //0x5d0c
         irsend.sendRaw(x5d0crawData, 127, 38);
-      
-      //irsend.sendSony(9228, 15, 5);
-      //irsend.sendSony(code, bits);
-      //irsend.sendSony(code, bits);
+  */    
+
+      irsend.sendSony(code, bits, 3);
     }
     else if (protocol == "Whynter"){
       server.send(200, "text/html", webOutput);
